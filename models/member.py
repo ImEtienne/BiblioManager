@@ -1,3 +1,6 @@
+# models/member.py
+from bson import ObjectId
+
 class Member:
     def __init__(self, mongo):
         self.db = mongo.db
@@ -8,7 +11,7 @@ class Member:
             "email": email,
             "borrowed_books": []
         }
-        self.db.members.insert_one(member)
+        return self.db.members.insert_one(member)
 
     def get_members(self):
         return list(self.db.members.find())
