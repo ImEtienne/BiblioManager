@@ -89,6 +89,15 @@ section {
   color: #0d6efd;
 }
 
+/* Avatar dans la navbar */
+.navbar-avatar {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
 /* Footer styling */
 footer {
   background-color: #343a40;
@@ -118,4 +127,15 @@ footer a:hover {
 }
 .social-icons a:hover {
   color: #0d6efd;
+}
+
+/** file login **/
+.body-container {
+  background-color: #f8f9fa;
+  font-family: "Roboto", sans-serif;
+  height: 100vh;
+}
+.login-card {
+  margin-top: 10%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }

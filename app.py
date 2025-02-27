@@ -12,6 +12,8 @@ from routes.member_routes import member_routes
 from routes.loan_routes import loan_routes
 from routes.auth_routes import auth_routes  # MODIFICATION: Importation du blueprint d'authentification (login/logout)
 from config import Config
+from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 
 app = Flask(__name__, static_folder="frontend", static_url_path="")
 app.config.from_object(Config)
@@ -46,12 +48,6 @@ app.register_blueprint(member_routes)
 app.register_blueprint(loan_routes)
 app.register_blueprint(auth_routes)  # MODIFICATION: Enregistrement du blueprint d'authentification
 
-# Exemple d'une route protégée accessible uniquement après authentification
-@app.route('/dashboard')
-@login_required  # MODIFICATION: Route protégée, accessible uniquement aux utilisateurs connectés
-def dashboard():
-    return f"<h1>Bienvenue {current_user.username} sur votre Dashboard !</h1>"  # MODIFICATION: Affichage du dashboard avec le nom de l'utilisateur connecté
-
 # Fonction de rappel pour les prêts en retard
 def send_due_loan_reminders():
     due_loans = loan_model.get_due_loans()
@@ -67,11 +63,46 @@ scheduler.start()
 # Routes pour servir le front-end (pour les pages statiques)
 @app.route('/')
 def serve_frontend():
-    return send_from_directory('frontend', 'index.html')
+    # return send_from_directory('frontend', 'index.html')
+    return render_template('index.html')
 
 @app.route('/<path:filename>')
 def static_files(filename):
     return send_from_directory('frontend', filename)
+    # return render_template('templates','index.html')
+
+@app.route("/utilisateurs", methods=["GET"])
+def get_utilisateurs():
+    try:
+        # Accéder à la collection des utilisateurs
+        utilisateurs_collection = mongo.db.utilisateurs
+       
+        # Récupérer tous les utilisateurs
+        utilisateurs_cursor = utilisateurs_collection.find()
+        utilisateurs_list = []
+       
+        for utilisateur in utilisateurs_cursor:
+            # Convertir l'ID MongoDB en chaîne de caractères
+            utilisateur["_id"] = str(utilisateur["_id"])
+           
+            # Normalisation des champs si nécessaire
+            normalized_utilisateur = {
+                "idutilisateur": utilisateur.get("idutilisateur", "Inconnu"),
+                "username": utilisateur.get("username", "Nom d'utilisateur inconnu"),
+                "nomutilisateur": utilisateur.get("nomutilisateur", "Nom inconnu"),
+                "prenomutilisateur": utilisateur.get("prenomutilisateur", "Prénom inconnu"),
+                "role": utilisateur.get("role", "Rôle inconnu"),
+                "filiere": utilisateur.get("filiere", "Filière inconnue")
+            }
+ 
+            # Ajouter l'utilisateur normalisé à la liste
+            utilisateurs_list.append(normalized_utilisateur)
+       
+        # Retourner la liste d'utilisateurs en format JSON
+        return jsonify({"utilisateurs": utilisateurs_list}), 200
+   
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
