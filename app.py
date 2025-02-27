@@ -11,6 +11,8 @@ from routes.loan_routes import loan_routes
 from config_settings import Config
 from flask import Flask, jsonify
 
+
+
 app = Flask(__name__, static_folder="frontend", static_url_path="")
 app.config.from_object(Config)
 
@@ -27,20 +29,10 @@ app.config['book_model'] = book_model
 app.config['member_model'] = member_model
 app.config['loan_model'] = loan_model
 
-# Initialiser Flask-Login
-login_manager = LoginManager()
-login_manager.login_view = "auth_routes.login"  # MODIFICATION: Définir la vue de login pour rediriger les utilisateurs non authentifiés
-login_manager.init_app(app)  # MODIFICATION: Initialiser Flask-Login avec l'application
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get_user_by_id(mongo, user_id)  # MODIFICATION: Fonction de chargement de l'utilisateur pour Flask-Login
-
 # Enregistrer les blueprints
 app.register_blueprint(book_routes)
 app.register_blueprint(member_routes)
 app.register_blueprint(loan_routes)
-app.register_blueprint(auth_routes)  # MODIFICATION: Enregistrement du blueprint d'authentification
 
 # Fonction de rappel pour les prêts en retard
 def send_due_loan_reminders():
