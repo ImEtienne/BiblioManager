@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bibliothèque Moderne</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Bibliothèque Moderne</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Basculer la navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#features">Fonctionnalités</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">À propos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">Témoignages</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <!-- MODIFICATION: Section d'authentification -->
+          {% if current_user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" 
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <!-- Affichage de l'avatar, ici une image par défaut est utilisée. Vous pouvez remplacer l'URL par celle de l'utilisateur -->
+              <img src="../templates/assets/avatar.png" alt="Avatar" class="navbar-avatar">
+
+              <!--<img src="{{ url_for('static', filename='assets/avatar.png') }}" alt="Avatar" class="navbar-avatar">
+              -->
+              {{ current_user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="/profile">Profil</a></li>
+              <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+              <li><a class="dropdown-item" href="/settings">Paramètres</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
+            </ul>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Se connecter</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Section Hero -->
+  <header class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content container">
+      <h1 class="display-4">Bienvenue à la Bibliothèque Moderne</h1>
+      <p class="lead">Gérez vos livres, membres et emprunts de manière efficace et innovante.</p>
+      <a href="#features" class="btn btn-primary btn-lg">Découvrir nos fonctionnalités</a>
+    </div>
+  </header>
+
+  <!-- Section Fonctionnalités -->
+  <section id="features" class="features">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4">
+          <div class="mb-4">
+            <i class="bi bi-book feature-icon"></i>
+          </div>
+          <h3>Gestion des Livres</h3>
+          <p>Ajoutez, modifiez et gérez votre collection avec facilité.</p>
+        </div>
+        <div class="col-md-4">
+          <div class="mb-4">
+            <i class="bi bi-people feature-icon"></i>
+          </div>
+          <h3>Gestion des Membres</h3>
+          <p>Enregistrez et suivez les activités de vos membres.</p>
+        </div>
+        <div class="col-md-4">
+          <div class="mb-4">
+            <i class="bi bi-clock-history feature-icon"></i>
+          </div>
+          <h3>Suivi des Emprunts</h3>
+          <p>Surveillez les prêts et recevez des rappels automatiques en cas de retard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section À propos -->
+  <section id="about" class="bg-light">
+    <div class="container">
+      <h2 class="section-heading">À propos de nous</h2>
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <img src="assets/wallpaperflare.jpg" alt="Bibliothèque" class="about-img">
+        </div>
+        <div class="col-md-6">
+          <p class="lead">Notre application révolutionne la gestion de bibliothèque en combinant une interface moderne avec des fonctionnalités avancées. Nous visons à offrir une solution complète et intuitive pour les bibliothèques physiques et numériques, facilitant la vie des administrateurs et des utilisateurs.</p>
+          <p>Grâce à des outils innovants, à la synchronisation en temps réel et à une expérience utilisateur optimisée, nous mettons la technologie au service de la culture et de la connaissance.</p>
+          <a href="#contact" class="btn btn-outline-primary mt-3">Contactez-nous pour en savoir plus</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Témoignages -->
+  <section id="testimonials">
+    <div class="container">
+      <h2 class="section-heading">Témoignages</h2>
+      <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <!-- Témoignage 1 -->
+          <div class="carousel-item active">
+            <div class="testimonial text-center">
+              <p>"Cette application a transformé la gestion de notre bibliothèque. L'interface est intuitive et les fonctionnalités sont tout simplement impressionnantes."</p>
+              <h5>Jean Dupont</h5>
+              <small>Bibliothécaire</small>
+            </div>
+          </div>
+          <!-- Témoignage 2 -->
+          <div class="carousel-item">
+            <div class="testimonial text-center">
+              <p>"Grâce à cette solution, nos membres bénéficient d'un accès rapide aux ouvrages et d'un suivi personnalisé de leurs emprunts."</p>
+              <h5>Marie Martin</h5>
+              <small>Responsable Membre</small>
+            </div>
+          </div>
+          <!-- Témoignage 3 -->
+          <div class="carousel-item">
+            <div class="testimonial text-center">
+              <p>"Une véritable révolution pour la gestion de bibliothèques modernes, simple, efficace et élégante."</p>
+              <h5>Luc Bernard</h5>
+              <small>Directeur de Bibliothèque</small>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+          <span class="visually-hidden">Précédent</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+          <span class="visually-hidden">Suivant</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+   <!-- Section Contact -->
+  <section id="contact" class="bg-light">
+    <div class="container">
+      <h2 class="section-heading">Contact</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <form class="contact-form">
+            <div class="mb-3">
+              <label for="contactName" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="contactName" placeholder="Votre nom" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="contactEmail" placeholder="Votre email" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactMessage" class="form-label">Message</label>
+              <textarea class="form-control" id="contactMessage" rows="4" placeholder="Votre message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <!-- Liens rapides -->
+        <div class="col-md-3">
+          <div class="footer-heading">Liens rapides</div>
+          <ul class="list-unstyled">
+            <li><a href="/">Accueil</a></li>
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a hrf="#about">A propos</a></li>
+            <li><a href="#testimonials">Témoignages</a></li>
+            <li><a href="/books">Livres</a></li>
+            <li><a href="/members">Membres</a></li>
+            <li><a href="/loans">Emprunts</a></li>
+            <li><a href="#contatc">Contact</a></li>
+          </ul>
+        </div>
+        <!-- Newsletter -->
+        <div class="col-md-4">
+          <div class="footer-heading">Newsletter</div>
+          <p>Abonnez-vous à notre newsletter pour recevoir les dernières nouveautés et offres.</p>
+          <form>
+            <div class="input-group newsletter-input">
+              <input type="email" class="form-control" placeholder="Votre email" required>
+              <button class="btn btn-primary" type="submit">S'abonner</button>
+            </div>
+          </form>
+        </div>
+        <!-- Réseaux sociaux -->
+        <div class="col-md-5">
+          <div class="footer-heading">Suivez-nous</div>
+          <p>Retrouvez-nous sur les réseaux sociaux pour rester informé de toutes nos actualités.</p>
+          <div class="social-icons">
+            <a href="#" target="_blank"><i class="bi bi-facebook"></i></a>
+            <a href="#" target="_blank"><i class="bi bi-twitter"></i></a>
+            <a href="#" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="#" target="_blank"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="mt-4" style="border-color: rgba(255,255,255,0.2);">
+      <div class="row">
+        <div class="col text-center">
+          <p>&copy; 2025 Bibliothèque Moderne. Tous droits réservés.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

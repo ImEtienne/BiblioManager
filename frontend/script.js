@@ -1,3 +1,5 @@
+'use strict'
+
 document.addEventListener("DOMContentLoaded", () => {
     const addBookForm = document.getElementById("add-book-form");
     const borrowBookForm = document.getElementById("borrow-book-form");
@@ -71,3 +73,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadBooks(); // Charger les livres au chargement de la page
 });
+
+
+/**
+ * DASHBOARD
+ */
+const ctx = document.getElementById('statsChart').getContext('2d');
+const statsChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Livres', 'Membres', 'Emprunts actifs'],
+    datasets: [{
+      label: 'Statistiques',
+      data: [
+        window.dashboardStats.totalBooks, 
+        window.dashboardStats.totalMembers, 
+        window.dashboardStats.activeLoans
+      ],
+      backgroundColor: ['#0d6efd', '#198754', '#dc3545']
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
