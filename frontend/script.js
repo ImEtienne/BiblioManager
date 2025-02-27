@@ -103,3 +103,13 @@ const statsChart = new Chart(ctx, {
   }
 });
 
+// Gestion du mode sombre/light
+const modeToggle = document.getElementById('modeToggle');
+modeToggle.addEventListener('change', function() {
+    if (this.checked) {
+    document.body.classList.add('bg-dark', 'text-white');
+    } else {
+    document.body.classList.remove('bg-dark', 'text-white');
+    }
+});
+

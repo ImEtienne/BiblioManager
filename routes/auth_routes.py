@@ -6,6 +6,10 @@ from werkzeug.security import check_password_hash
 
 auth_routes = Blueprint('auth_routes', __name__)
 
+@auth_routes.route('/')
+def home():
+    return render_template('index.html')
+
 @auth_routes.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -17,7 +21,7 @@ def login():
         if user and check_password_hash(user.password, password):
             login_user(user)
             flash("Connexion réussie !", "success")
-            return redirect('/dashboard')
+            return redirect('/')
         else:
             flash("Nom d'utilisateur ou mot de passe incorrect.", "danger")
     return render_template('login.html')
@@ -49,22 +53,10 @@ def register():
         return redirect(url_for('auth_routes.login'))
     return render_template('register.html')
 
-@auth_routes.route('/dashboard')
-@login_required
-def dashboard():
-    # Exemple de récupération de statistiques (à adapter selon votre modèle)
-    mongo = current_app.config['mongo']
-    stats = {
-        'total_books': mongo.db.books.count_documents({}),
-        'total_members': mongo.db.members.count_documents({}),
-        'active_loans': mongo.db.loans.count_documents({"date_returned": None})
-    }
-    # Vous pouvez aussi ajouter d'autres stats ou données de graphiques
-    return render_template('dashboard.html', stats=stats)
 
 @auth_routes.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash("Déconnexion réussie.", "info")
-    return redirect(url_for('auth_routes.login'))
+    return redirect(url_for('auth_routes.home'))
