@@ -18,6 +18,7 @@ from routes.admin_routes import admin_routes
 from routes.dashboard_routes import dashboard_routes
 from routes.utilisateur_routes import utilisateur_routes
 from routes.emprunts_routes import emprunts_routes
+from routes.punitions_routes import punitions_routes
 
 app = Flask(__name__, static_folder="frontend", static_url_path="")
 app.config.from_object(Config)
@@ -55,6 +56,7 @@ app.register_blueprint(admin_routes)
 app.register_blueprint(dashboard_routes)
 app.register_blueprint(utilisateur_routes)
 app.register_blueprint(emprunts_routes)
+app.register_blueprint(punitions_routes)
 
 # Fonction de rappel pour les prêts en retard
 def send_due_loan_reminders():
