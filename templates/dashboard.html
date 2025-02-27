@@ -175,10 +175,9 @@
         {% endif %}
         {% if current_user.role in ['admin', 'gestionnaire'] %}
         <li class="nav-item">
-        <a class="nav-link" href="/books">
-            <i class="bi bi-book"></i>
-            <span class="menu-text">Livres</span>
-        </a>
+            <a class="nav-link" href="{{ url_for('dashboard_routes.dashboard_books') }}">
+                <i class="bi bi-book"></i> <span class="menu-text">Gestion des Livres</span>
+            </a>
         </li>
         <li class="nav-item">
         <a class="nav-link" href="/members">
@@ -235,7 +234,7 @@
         <div class="col-md-4">
           <div class="card text-white bg-danger">
             <div class="card-body">
-              <h5 class="card-title">Emprunts actifs</h5>
+              <h5 class="card-title">Prêts actifs</h5>
               <p class="card-text">{{ stats.active_loans }}</p>
             </div>
           </div>
@@ -276,6 +275,64 @@
           </div>
         </div>
       </div>
+      <!-- Tableau des livres (sans boutons d'action) -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Liste des livres</h5>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Nombre de pages</th>
+            <th>Année / Code Livre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in books %}
+            <tr>
+              <td>
+                {% if book.title %}
+                  {{ book.title }}
+                {% elif book.titreliv %}
+                  {{ book.titreliv }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                {% if book.author %}
+                  {{ book.author }}
+                {% elif book.nomaut %}
+                  {{ book.nomaut }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                {% if book.nbrpages %}
+                  {{ book.nbrpages }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                {% if book.year %}
+                  {{ book.year }}
+                {% elif book.codliv %}
+                  {{ book.codliv }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
       
       <!-- Tableau des activités récentes -->
       <div class="card mb-4">

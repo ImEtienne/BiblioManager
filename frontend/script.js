@@ -82,7 +82,7 @@ const ctx = document.getElementById('statsChart').getContext('2d');
 const statsChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ['Livres', 'Membres', 'Emprunts actifs'],
+    labels: ['Livres', 'Utilisateurs', 'prêts actifs'],
     datasets: [{
       label: 'Statistiques',
       data: [
@@ -90,7 +90,7 @@ const statsChart = new Chart(ctx, {
         window.dashboardStats.totalMembers, 
         window.dashboardStats.activeLoans
       ],
-      backgroundColor: ['#0d6efd', '#198754', '#dc3545']
+      /*backgroundColor: ['#0d6efd', '#198754', '#dc3545']*/
     }]
   },
   options: {

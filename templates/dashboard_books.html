@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des Livres - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h2 class="mb-4">Gestion des Livres</h2>
+  {% if current_user.role in ['admin', 'gestionnaire'] %}
+    <a href="{{ url_for('books_routes.add') }}" class="btn btn-primary mb-3">
+      <i class="bi bi-plus-circle"></i> Ajouter un livre
+    </a>
+  {% endif %}
+  
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Auteur</th>
+              <th>Nombre de pages</th>
+              <th>Année / Code</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in books %}
+            <tr>
+              <td>
+                {% if book.title %}
+                  {{ book.title }}
+                {% elif book.titreliv %}
+                  {{ book.titreliv }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                {% if book.author %}
+                  {{ book.author }}
+                {% elif book.nomaut %}
+                  {{ book.nomaut }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                {% if book.nbrpages %}
+                  {{ book.nbrpages }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                {% if book.year %}
+                  {{ book.year }}
+                {% elif book.codliv %}
+                  {{ book.codliv }}
+                {% else %}
+                  N/A
+                {% endif %}
+              </td>
+              <td>
+                {% if current_user.role in ['admin', 'gestionnaire'] %}
+                    <a href="{{ url_for('books_routes.edit', book_id=book._id) }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i>
+                    </a>
+                    <!-- Formulaire pour la suppression (en POST) -->
+                    <form action="{{ url_for('books_routes.delete', book_id=book._id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    </form>
+                    {% if book.available %}
+                    <a href="{{ url_for('books_routes.mark_unavailable', book_id=book._id) }}" class="btn btn-sm btn-outline-warning">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                    {% else %}
+                    <span class="badge bg-secondary">Indisponible</span>
+                    {% endif %}
+                {% elif current_user.role in ['user', 'etudiant'] %}
+                    <a href="{{ url_for('loans.request', book_id=book._id) }}" class="btn btn-sm btn-outline-success">
+                    <i class="bi bi-hand-thumbs-up"></i> Emprunter
+                    </a>
+                {% else %}
+                    <span class="text-muted">Aucune action</span>
+                {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
