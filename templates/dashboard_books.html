@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'base_dashboard.html' %}
 
 {% block title %}Gestion des Livres - Dashboard{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+
   <h2 class="mb-4">Gestion des Livres</h2>
   {% if current_user.role in ['admin', 'gestionnaire'] %}
     <a href="{{ url_for('books_routes.add') }}" class="btn btn-primary mb-3">
@@ -79,11 +79,11 @@
                     {% else %}
                     <span class="badge bg-secondary">Indisponible</span>
                     {% endif %}
-                {% elif current_user.role in ['user', 'etudiant'] %}
+                    {% elif current_user.role in ['admin','user', 'etudiant'] %}
                     <a href="{{ url_for('loans.request', book_id=book._id) }}" class="btn btn-sm btn-outline-success">
-                    <i class="bi bi-hand-thumbs-up"></i> Emprunter
+                        <i class="bi bi-hand-thumbs-up"></i> Emprunter
                     </a>
-                {% else %}
+                    {% else %}
                     <span class="text-muted">Aucune action</span>
                 {% endif %}
                 </td>
@@ -94,5 +94,4 @@
       </div>
     </div>
   </div>
-</div>
 {% endblock %}
