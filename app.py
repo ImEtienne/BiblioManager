@@ -16,6 +16,7 @@ from flask import Flask, jsonify
 from routes.admin_routes import admin_routes
 from routes.dashboard_routes import dashboard_routes
 from routes.books_routes import books_routes
+from routes.profile_routes import profile_routes
 
 
 app = Flask(__name__, static_folder="frontend", static_url_path="")
@@ -52,6 +53,7 @@ app.register_blueprint(auth_routes)
 app.register_blueprint(admin_routes)
 app.register_blueprint(dashboard_routes)
 app.register_blueprint(books_routes)
+app.register_blueprint(profile_routes)
 
 # Fonction de rappel pour les prêts en retard
 def send_due_loan_reminders():
