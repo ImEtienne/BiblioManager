@@ -2,81 +2,63 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Administration - Bibliothèque Moderne</title>
+  <title>{% block title %}Administration - Bibliothèque Moderne{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <!-- Optionnel : Chart.js si besoin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
   <style>
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
     }
-    /* Navbar d'administration */
-    .navbar {
+    /* Navbar fixe en haut */
+    .navbar-dashboard {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1030;
     }
-    /* Sidebar fixe */
+    /* Sidebar fixe à gauche */
     .sidebar {
       position: fixed;
-      top: 56px; /* Hauteur de la navbar */
+      top: 56px; /* hauteur de la navbar */
       bottom: 0;
       left: 0;
       width: 240px;
       background: #343a40;
-      padding-top: 1rem;
+      color: #ddd;
       overflow-y: auto;
+      padding: 25px 0 1rem 0;
       transition: width 0.3s;
     }
-    .sidebar-header {
-      padding: 0 1rem;
-      margin-bottom: 1rem;
-      color: #fff;
-      font-size: 1.2rem;
-      border-bottom: 1px solid #495057;
-    }
-    /* Champ de recherche dans la sidebar */
-    .sidebar-search {
-      padding: 0 1rem 1rem;
-    }
-    .sidebar-search input {
-      background: #3b4146;
-      border: none;
+    .sidebar a {
       color: #ddd;
-    }
-    .sidebar-search .input-group-text {
-      background: #3b4146;
-      border: none;
-      color: #ddd;
-    }
-    /* Menu dans la sidebar */
-    .sidebar-menu .nav-link {
-      font-size: 0.95rem;
+      text-decoration: none;
+      display: block;
       padding: 0.75rem 1rem;
-      color: #ddd;
-      transition: background 0.2s, color 0.2s;
     }
-    .sidebar-menu .nav-link:hover,
-    .sidebar-menu .nav-link.active {
+    .sidebar a:hover, .sidebar a.active {
       background: #495057;
       color: #fff;
     }
-    .sidebar-menu .nav-link i {
-      font-size: 1.2rem;
+    .sidebar i {
       margin-right: 0.75rem;
     }
     /* Contenu principal */
     .content {
-      margin-top: 56px; /* Hauteur de la navbar */
-      margin-left: 240px; /* Largeur de la sidebar */
+      margin-top: 56px; /* hauteur de la navbar */
+      margin-left: 240px; /* largeur de la sidebar */
       padding: 1rem;
       min-height: calc(100vh - 56px);
+      background-color: #f8f9fa;
     }
     /* Titres de section dans le contenu */
     .section-title {
@@ -84,13 +66,32 @@
       border-bottom: 2px solid #ddd;
       padding-bottom: 0.5rem;
     }
+    /* Navbar - styles */
+    .navbar-avatar {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    /* Fil d'Ariane */
+    .breadcrumb {
+      background: #fff;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: ">";
+    }
+    /* Table headers */
+    .table thead th {
+      background: #343a40;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
   <!-- Navbar supérieure -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-dashboard">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Admin Panel</a>
+      <a class="navbar-brand" href="/">Admin Panel</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -113,17 +114,9 @@
   
   <!-- Sidebar -->
   <nav class="sidebar">
-    <div class="sidebar-header">Administration</div>
-    <div class="sidebar-search">
-      <div class="input-group">
-        <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input type="text" class="form-control" placeholder="Filtrer...">
-      </div>
-    </div>
-
     <ul class="nav flex-column sidebar-menu">
       <li class="nav-item">
-        <a class="nav-link" href="/admin"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+        <a class="nav-link" href="{{ url_for('admin_routes.admin_panel') }}"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#usersSection"><i class="bi bi-people"></i> <span>Utilisateurs</span></a>
@@ -138,52 +131,156 @@
         <a class="nav-link" href="#backupSection"><i class="bi bi-cloud-upload"></i> <span>Sauvegarde</span></a>
       </li>
       <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('dashboard_routes.dashboard') }}">
-                <i class="bi bi-arrow-left-circle"></i> Retour au Dashboard
-            </a>
+        <a class="nav-link" href="{{ url_for('dashboard_routes.dashboard') }}">
+          <i class="bi bi-arrow-left-circle"></i> <span>Retour au Dashboard</span>
+        </a>
       </li>
     </ul>
-    
   </nav>
   
   <!-- Contenu principal -->
   <main class="content">
     <div class="container-fluid">
-      <!-- En-tête du dashboard -->
-      <div class="row mb-4">
-        <div class="col-12">
-          <h2>Bienvenue, {{ current_user.username }}</h2>
-          <p>Rôle: {{ current_user.role }}</p>
+      <!-- Fil d'Ariane -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-white p-2 rounded">
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('admin_routes.admin_panel') }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Gestion des Utilisateurs</li>
+        </ol>
+      </nav>
+      <!-- Bouton pour déclencher le modal "Créer un utilisateur" -->
+       {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-      </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+<div class="mb-3">
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createUserModal">
+    <i class="bi bi-plus-circle"></i> Créer un utilisateur
+  </button>
+</div>
+
+<!-- Modal de création d'utilisateur -->
+<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="POST" action="{{ url_for('admin_routes.create_user') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createUserModalLabel">Créer un utilisateur</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="col-md-6">
+              <label for="nomutilisateur" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="nomutilisateur" name="nomutilisateur" required>
+            </div>
+            <div class="col-md-6">
+              <label for="prenomutilisateur" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="prenomutilisateur" name="prenomutilisateur" required>
+            </div>
+            <div class="col-md-6">
+              <label for="filiere" class="form-label">Filière</label>
+              <input type="text" class="form-control" id="filiere" name="filiere">
+            </div>
+            <div class="col-md-6">
+              <label for="role" class="form-label">Rôle</label>
+              <select class="form-select" id="role" name="role" required>
+                <option value="etudiant">Étudiant</option>
+                <option value="user">User</option>
+                <option value="gestionnaire">Gestionnaire</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="password" class="form-label">Mot de passe</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <!-- Vous pouvez ajouter d'autres champs comme idutilisateur si nécessaire -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary">Créer l'utilisateur</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
       
       <!-- Section Utilisateurs -->
-      <section id="usersSection">
-        <h3 class="section-title">Gestion des utilisateurs</h3>
+      <section id="usersSection" class="mb-4">
+        <h3 class="section-title">Liste des Utilisateurs</h3>
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Liste des utilisateurs</h5>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Nom d'utilisateur</th>
-                    <th>Email</th>
+                    <th>ID Utilisateur</th>
+                    <th>Username</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
                     <th>Rôle</th>
+                    <th>Filière</th>
+                    <!-- Vous pouvez ajouter d'autres colonnes si nécessaire -->
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for user in users %}
                   <tr>
+                    <td>{{ user.idutilisateur }}</td>
                     <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
+                    <td>{{ user.nomutilisateur }}</td>
+                    <td>{{ user.prenomutilisateur }}</td>
                     <td>{{ user.role }}</td>
+                    <td>{{ user.filiere }}</td>
                     <td>
-                      <a href="/admin/user/edit/{{ user._id }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
-                      <a href="/admin/user/delete/{{ user._id }}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                      <a href="/admin/user/edit/{{ user._id }}" class="btn btn-sm btn-outline-primary" title="Modifier l'utilisateur"><i class="bi bi-pencil"></i></a>
+                      <!-- Supprimer -->
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ user._id }}">
+                            <i class="bi bi-trash"></i>
+                        </button>                    
                     </td>
                   </tr>
+
+                  <!-- Modal Suppression de l'utilisateur -->
+                    <div class="modal fade" id="deleteUserModal{{ user._id }}" tabindex="-1" aria-labelledby="deleteUserLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title" id="deleteUserLabel">Supprimer l'utilisateur</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Êtes-vous sûr de vouloir supprimer l'utilisateur <strong>{{ user.username }}</strong> ?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <form action="{{ url_for('admin_routes.delete_user', user_id=user._id) }}" method="POST">
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                   {% endfor %}
                 </tbody>
               </table>
@@ -193,11 +290,11 @@
       </section>
       
       <!-- Section Paramètres système -->
-      <section id="settingsSection">
-        <h3 class="section-title">Paramètres système</h3>
+      <section id="settingsSection" class="mb-4">
+        <h3 class="section-title">Paramètres Système</h3>
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Configuration générale</h5>
+            <h5 class="card-title">Configuration Générale</h5>
             <form action="/admin/settings" method="POST">
               <div class="mb-3">
                 <label for="siteName" class="form-label">Nom du site</label>
@@ -214,8 +311,8 @@
       </section>
       
       <!-- Section Logs & Audit -->
-      <section id="logsSection">
-        <h3 class="section-title">Logs et Audit</h3>
+      <section id="logsSection" class="mb-4">
+        <h3 class="section-title">Logs & Audit</h3>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Historique des actions</h5>
@@ -245,22 +342,22 @@
         </div>
       </section>
       
-      <!-- Section Sauvegarde et Maintenance -->
-      <section id="backupSection">
+      <!-- Section Sauvegarde & Maintenance -->
+      <section id="backupSection" class="mb-4">
         <h3 class="section-title">Sauvegarde & Maintenance</h3>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Actions de maintenance</h5>
             <p>Effectuez une sauvegarde ou lancez des routines de maintenance.</p>
-            <a href="/admin/backup" class="btn btn-warning"><i class="bi bi-cloud-upload"></i> Sauvegarder</a>
-            <a href="/admin/maintenance" class="btn btn-secondary"><i class="bi bi-tools"></i> Maintenance</a>
+            <a href="/admin/backup" class="btn btn-warning" title="Lancer une sauvegarde"><i class="bi bi-cloud-upload"></i> Sauvegarder</a>
+            <a href="/admin/maintenance" class="btn btn-secondary" title="Lancer la maintenance"><i class="bi bi-tools"></i> Maintenance</a>
           </div>
         </div>
       </section>
     </div>
   </main>
   
-  <!-- Scripts -->
+  <!-- Scripts Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
