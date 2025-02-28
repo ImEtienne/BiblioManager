@@ -62,8 +62,6 @@ app.register_blueprint(emprunts_routes)
 app.register_blueprint(punitions_routes)
 app.register_blueprint(books_routes)
 app.register_blueprint(profile_routes)
-app.register_blueprint(utilisateur_routes)
-app.register_blueprint(emprunts_routes)
 
 # Fonction de rappel pour les prêts en retard
 def send_due_loan_reminders():
