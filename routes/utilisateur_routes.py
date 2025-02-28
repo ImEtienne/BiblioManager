@@ -5,8 +5,6 @@ from flask import current_app
 
 utilisateur_routes = Blueprint('utilisateur_routes', __name__)
 
-
-
 @utilisateur_routes.route('/utilisateurs')  # La route devient donc "/utilisateurs/"
 
 @login_required
