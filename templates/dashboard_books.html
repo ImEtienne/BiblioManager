@@ -102,7 +102,7 @@
                   <a href="{{ url_for('books_routes.mark_unavailable', book_id=book._id) }}" class="btn btn-sm btn-outline-warning" title="Marquer comme indisponible">
                     <i class="bi bi-x-circle"></i>
                   </a>
-                    {% if current_user.role in ['etudiant', 'admin'] %}
+                    {% if current_user.role in ['etudiant', 'admin', 'user'] %}
                       <!-- Bouton Emprunter -->
                     <form action="{{ url_for('loan_routes.borrow', book_id=book.codliv) }}" method="POST" style="display:inline;">
                       <button type="submit" class="btn btn-sm btn-outline-success" title="Emprunter le livre" onclick="return confirm('Confirmez l\'emprunt de ce livre ?');">
