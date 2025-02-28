@@ -15,14 +15,9 @@ from flask import Flask, request, jsonify
 from flask import Flask, jsonify
 from routes.admin_routes import admin_routes
 from routes.dashboard_routes import dashboard_routes
-<<<<<<< HEAD
 from routes.utilisateur_routes import utilisateur_routes
 from routes.emprunts_routes import emprunts_routes
 from routes.punitions_routes import punitions_routes
-=======
-from routes.books_routes import books_routes
-
->>>>>>> eb6c6683d3f309a11f4c97f8235c07ac27be486e
 
 app = Flask(__name__, static_folder="frontend", static_url_path="")
 app.config.from_object(Config)
