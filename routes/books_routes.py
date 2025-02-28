@@ -1,6 +1,7 @@
 # routes/book_routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from flask_login import login_required
+from bson import ObjectId
 
 books_routes = Blueprint('books_routes', __name__, url_prefix='/books')
 
@@ -31,10 +32,6 @@ def add():
         return redirect(url_for('dashboard_routes.dashboard_books'))
     
     return render_template('books_add.html')
-
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
-from flask_login import login_required
-from bson import ObjectId
 
 @books_routes.route('/edit/<book_id>', methods=['GET', 'POST'])
 @login_required
@@ -82,4 +79,34 @@ def delete(book_id):
         flash("Livre supprimé avec succès !", "success")
     else:
         flash("Erreur lors de la suppression du livre.", "danger")
+    return redirect(url_for('dashboard_routes.dashboard_books'))
+
+
+@books_routes.route('/mark_unavailable/<book_id>', methods=['POST'])
+@login_required
+def mark_unavailable(book_id):
+    mongo = current_app.config['mongo']
+    result = mongo.db.books.update_one(
+        {"_id": ObjectId(book_id)},
+        {"$set": {"available": False}}
+    )
+    if result.modified_count:
+        flash("Livre marqué comme indisponible.", "success")
+    else:
+        flash("Erreur lors de la mise à jour du livre.", "danger")
+    return redirect(url_for('dashboard_routes.dashboard_books'))
+
+
+@books_routes.route('/maintenance/<book_id>', methods=['POST'])
+@login_required
+def mark_maintenance(book_id):
+    mongo = current_app.config['mongo']
+    result = mongo.db.books.update_one(
+        {"_id": ObjectId(book_id)},
+        {"$set": {"maintenance": True, "available": False}}
+    )
+    if result.modified_count:
+        flash("Le livre est en maintenance.", "success")
+    else:
+        flash("Erreur lors de la mise en maintenance.", "danger")
     return redirect(url_for('dashboard_routes.dashboard_books'))

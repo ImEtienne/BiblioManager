@@ -88,7 +88,8 @@ const statsChart = new Chart(ctx, {
       data: [
         window.dashboardStats.totalBooks, 
         window.dashboardStats.totalMembers, 
-        window.dashboardStats.activeLoans
+        window.dashboardStats.activeLoans,
+        window.dashboardStats.overdue_loans
       ],
       /*backgroundColor: ['#0d6efd', '#198754', '#dc3545']*/
     }]

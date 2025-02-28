@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil - Bibliothèque Moderne{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <ul class="nav" style="list-style: none; padding-left: 0;">
+  <li class="nav-item">
+    <a class="nav-link btn btn-outline-light ms-2" href="{{ url_for('auth_routes.home') }}">
+      <i class="bi bi-arrow-left-circle me-1"></i> Retour à l'accueil
+    </a>
+  </li>
+</ul>
+
+  <h2>Mon Profil</h2>
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-3 text-center">
+          <img src="{{ url_for('static', filename='assets/avatar.png') }}" alt="Avatar" class="img-fluid rounded-circle" style="max-width:150px;">
+        </div>
+        <div class="col-md-9">
+          <h4>{{ current_user.username }}</h4>
+          <p><strong>Nom:</strong> {{ current_user.nomutilisateur }}</p>
+          <p><strong>Prénom:</strong> {{ current_user.prenomutilisateur }}</p>
+          <p><strong>Rôle:</strong> {{ current_user.role }}</p>
+          <p><strong>Filière:</strong> {{ current_user.filiere }}</p>
+        </div>
+      </div>
+      <hr>
+      <h5>Modifier mes informations</h5>
+      <form method="POST" action="{{ url_for('profile_routes.profile') }}">
+        <div class="mb-3">
+          <label for="username" class="form-label">Nom d'utilisateur</label>
+          <input type="text" class="form-control" id="username" name="username" value="{{ current_user.username }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="nomutilisateur" class="form-label">Nom</label>
+          <input type="text" class="form-control" id="nomutilisateur" name="nomutilisateur" value="{{ current_user.nomutilisateur }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="prenomutilisateur" class="form-label">Prénom</label>
+          <input type="text" class="form-control" id="prenomutilisateur" name="prenomutilisateur" value="{{ current_user.prenomutilisateur }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="filiere" class="form-label">Filière</label>
+          <input type="text" class="form-control" id="filiere" name="filiere" value="{{ current_user.filiere }}" required>
+        </div>
+        <!-- Optionnel : changer de mot de passe -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+          <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

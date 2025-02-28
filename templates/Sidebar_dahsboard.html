@@ -1,12 +1,14 @@
 <!-- templates/Sidebar_dahsboard.html -->
 <nav class="sidebar">
   <ul class="nav flex-column sidebar-menu">
+    <!-- Lien commun au dashboard -->
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('dashboard_routes.dashboard') }}">
         <i class="bi bi-speedometer2"></i>
         <span class="menu-text">Dashboard</span>
       </a>
     </li>
+    <!-- Administration réservée aux admins -->
     {% if current_user.role == 'admin' %}
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('admin_routes.admin_panel') }}">
@@ -15,6 +17,7 @@
       </a>
     </li>
     {% endif %}
+    <!-- Liens pour admin et gestionnaire -->
     {% if current_user.role in ['admin', 'gestionnaire'] %}
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('dashboard_routes.dashboard_books') }}">
@@ -25,16 +28,38 @@
     <li class="nav-item">
       <a class="nav-link" href="/members">
         <i class="bi bi-people"></i>
-        <span class="menu-text">Membres</span>
+        <span class="menu-text">Utilisateurs</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/loans">
         <i class="bi bi-clock-history"></i>
-        <span class="menu-text">Emprunts</span>
+        <span class="menu-text">Tous les emprunts</span>
       </a>
     </li>
     {% endif %}
+    <!-- Liens pour étudiant ou invité ou user -->
+    {% if current_user.role in ['admin', 'gestionnaire','etudiant', 'invité', 'user'] %}
+    <li class="nav-item">
+      <a class="nav-link" href="/catalogue">
+        <i class="bi bi-book-half"></i>
+        <span class="menu-text">Catalogue</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/mes_emprunts">
+        <i class="bi bi-journal-check"></i>
+        <span class="menu-text">Mes Emprunts</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/recommandations">
+        <i class="bi bi-stars"></i>
+        <span class="menu-text">Recommandations</span>
+      </a>
+    </li>
+    {% endif %}
+    <!-- Lien commun à tous les utilisateurs -->
     <li class="nav-item">
       <a class="nav-link" href="/profile">
         <i class="bi bi-person-circle"></i>
