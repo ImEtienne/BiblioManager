@@ -18,7 +18,7 @@
     </li>
     {% endif %}
     <!-- Liens pour admin et gestionnaire -->
-    {% if current_user.role in ['admin', 'gestionnaire'] %}
+    {% if current_user.role in ['admin', 'gestionnaire', 'etudiant', 'user'] %}
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('dashboard_routes.dashboard_books') }}">
         <i class="bi bi-book"></i>
