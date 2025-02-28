@@ -1,0 +1,29 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %} Ajouter un livre - Bibliothèque Moderne {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>Ajouter un nouveau livre</h2>
+  <form method="POST" action="{{ url_for('books_routes.add') }}">
+    <div class="mb-3">
+      <label for="title" class="form-label">Titre</label>
+      <input type="text" class="form-control" id="title" name="title" placeholder="Entrez le titre du livre" required>
+    </div>
+    <div class="mb-3">
+      <label for="author" class="form-label">Auteur</label>
+      <input type="text" class="form-control" id="author" name="author" placeholder="Entrez le nom de l'auteur" required>
+    </div>
+    <div class="mb-3">
+      <label for="nbrpages" class="form-label">Nombre de pages</label>
+      <input type="number" class="form-control" id="nbrpages" name="nbrpages" placeholder="Nombre de pages">
+    </div>
+    <div class="mb-3">
+      <label for="year" class="form-label">Année</label>
+      <input type="number" class="form-control" id="year" name="year" placeholder="Année de publication">
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter le livre</button>
+    <a href="{{ url_for('dashboard_routes.dashboard_books') }}" class="btn btn-secondary">Annuler</a>
+  </form>
+</div>
+{% endblock %}

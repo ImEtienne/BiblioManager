@@ -1,69 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bibliothèque Moderne</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Bibliothèque Moderne</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Basculer la navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#features">Fonctionnalités</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">À propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#testimonials">Témoignages</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <!-- MODIFICATION: Section d'authentification -->
-          {% if current_user.is_authenticated %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" 
-               data-bs-toggle="dropdown" aria-expanded="false">
-              <!-- Affichage de l'avatar, ici une image par défaut est utilisée. Vous pouvez remplacer l'URL par celle de l'utilisateur -->
-              <img src="{{ url_for('static', filename='assets/avatar.png') }}" alt="Avatar" class="navbar-avatar me-2">
+{% extends 'base.html' %}
 
-              <!--<img src="{{ url_for('static', filename='assets/avatar.png') }}" alt="Avatar" class="navbar-avatar">
-              -->
-              {{ current_user.username }}
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-              <li><a class="dropdown-item" href="/profile">Profil</a></li>
-              <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-              <li><a class="dropdown-item" href="/settings">Paramètres</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
-            </ul>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Se connecter</a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
+{% block title %}Accueil - Bibliothèque Moderne{% endblock %}
 
-  <!-- Section Hero -->
-  <header class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content container">
-      <h1 class="display-4">Bienvenue à la Bibliothèque Moderne</h1>
-      <p class="lead">Gérez vos livres, membres et emprunts de manière efficace et innovante.</p>
-      <a href="#features" class="btn btn-primary btn-lg">Découvrir nos fonctionnalités</a>
-    </div>
-  </header>
-
+{% block content %}
   <!-- Section Fonctionnalités -->
   <section id="features" class="features">
     <div class="container">
@@ -178,58 +117,4 @@
       </div>
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="row">
-        <!-- Liens rapides -->
-        <div class="col-md-3">
-          <div class="footer-heading">Liens rapides</div>
-          <ul class="list-unstyled">
-            <li><a href="/">Accueil</a></li>
-            <li><a href="#features">Fonctionnalités</a></li>
-            <li><a hrf="#about">A propos</a></li>
-            <li><a href="#testimonials">Témoignages</a></li>
-            <li><a href="/books">Livres</a></li>
-            <li><a href="/members">Membres</a></li>
-            <li><a href="/loans">Emprunts</a></li>
-            <li><a href="#contatc">Contact</a></li>
-          </ul>
-        </div>
-        <!-- Newsletter -->
-        <div class="col-md-4">
-          <div class="footer-heading">Newsletter</div>
-          <p>Abonnez-vous à notre newsletter pour recevoir les dernières nouveautés et offres.</p>
-          <form>
-            <div class="input-group newsletter-input">
-              <input type="email" class="form-control" placeholder="Votre email" required>
-              <button class="btn btn-primary" type="submit">S'abonner</button>
-            </div>
-          </form>
-        </div>
-        <!-- Réseaux sociaux -->
-        <div class="col-md-5">
-          <div class="footer-heading">Suivez-nous</div>
-          <p>Retrouvez-nous sur les réseaux sociaux pour rester informé de toutes nos actualités.</p>
-          <div class="social-icons">
-            <a href="#" target="_blank"><i class="bi bi-facebook"></i></a>
-            <a href="#" target="_blank"><i class="bi bi-twitter"></i></a>
-            <a href="#" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="#" target="_blank"><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-      </div>
-      <hr class="mt-4" style="border-color: rgba(255,255,255,0.2);">
-      <div class="row">
-        <div class="col text-center">
-          <p>&copy; 2025 Bibliothèque Moderne. Tous droits réservés.</p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}
